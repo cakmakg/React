@@ -1,0 +1,35 @@
+{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+}
+
+body{
+    background-color: orange;
+}
+.cardcontainer{
+    background-image:url(https://p4.wallpaperbetter.com/wallpaper/661/973/110/cool-nba-logo-wallpaper-preview.jpg) ;
+    
+
+}
+
+.player-kart{
+    height: 400px;
+    transition: transform 1s;
+}
+
+.player-resim{
+    height: 350px;
+    object-fit: cover;
+
+}
+.player-kart:hover .player-resim{
+  transform: scale(0.95);
+}
+
+ul{
+    height:350px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
