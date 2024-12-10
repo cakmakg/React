@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 
 
+
 export const Nav = styled.div`
   /* SALMON olan navbar */
   padding: 0 2rem;

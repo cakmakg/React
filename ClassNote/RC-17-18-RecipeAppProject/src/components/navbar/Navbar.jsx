@@ -1,23 +1,31 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
+import {  } from 'react-router-dom'
+import "./NavbarStyles.jsx"
+import { Nav, Menu, MenuLink, Logo } from "./NavbarStyles";
 
 const Navbar = () => {
   return (
-    <div>
-    <NavLink className="nav-link" to="/" >
-    home
-    </NavLink>
-    <NavLink className="nav-link" to="/about">
+       
+    <Nav>
+     <Menu>
+    <Logo to="/home">Clarusway</Logo>
+   
+    <MenuLink  to="/about">
     ABOUT
-    </NavLink>
-    <NavLink className="nav-link" to="/github">
+    </MenuLink>
+    <a href="/github">
     GITHUB
-    </NavLink>
-    <NavLink className="nav-link" to="/logout">
+    </a>
+    <MenuLink  to="/logout">
     LOGOUT
-    </NavLink>
+    </MenuLink>
+    </Menu> 
 
-    </div>
+    </Nav>
+    
+    
+    
+
     
   )
 }

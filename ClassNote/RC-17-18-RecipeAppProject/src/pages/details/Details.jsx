@@ -5,7 +5,10 @@ import { useLocation } from 'react-router-dom'
 const Details = () => {
 
 
-
+ // const {
+  //   state: { recipe },
+  // } = useLocation();
+  // console.log(recipe);
 
 
 
