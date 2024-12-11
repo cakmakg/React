@@ -1,9 +1,6 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-
-
-
 export const Nav = styled.div`
   /* SALMON olan navbar */
   padding: 0 2rem;
@@ -12,7 +9,7 @@ export const Nav = styled.div`
   align-items: center; // dikeyde ortala
   flex-wrap: wrap;
   /* Varsayılan olarak esnek öğeler tek bir satıra sığmaya çalışırlar. Gerektiğinde birden fazla satıra yaymak için bu özelliği kullanabilirsiniz */
-  background: salmon;
+  background: #ae908d;
   border-radius: 0 0 10px 10px;
   height: 75px;
   font-size: 2rem;
@@ -20,6 +17,7 @@ export const Nav = styled.div`
 
 export const Menu = styled.div`
   /* navbardaki 3 kelime about ...hepsini içine alan sarmalın (kutunun ) özellikleri*/
+
   background: #e1f1dd;
   display: flex;
   justify-content: center;
@@ -31,11 +29,12 @@ export const Menu = styled.div`
     /* uzun yazı olurda taşarsa gizle (hamburgere dönüşünce)*/
     flex-direction: column;
 
+  
+    display: ${({ ackapa }) => (ackapa === true ? "flex" : "none")};
+
     width: 100%;
-    /* hamburgere tıklanınca true olan props sayesinde görün, false olunca görünme */
-    display: ${({osman})=>osman===true? "flex" : "none"};
   }
- 
+
   a {
     padding: 1rem 2rem;
     cursor: pointer;
@@ -95,12 +94,10 @@ export const Logo = styled(MenuLink)`
   color: #393e46;
   /* text-decoration: none; */
   font-weight: 800;
- 
- 
+
   span {
-   
     font-weight: 400;
-   
+
     color: #00adb5;
   }
 `;

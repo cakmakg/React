@@ -1,33 +1,31 @@
-import React from 'react'
-import {  } from 'react-router-dom'
-import "./NavbarStyles.jsx"
-import { Nav, Menu, MenuLink, Logo } from "./NavbarStyles";
+import React, { useState } from "react";
+import { Nav, Logo, Menu, MenuLink, Hamburger } from "./NavbarStyles";
+import { GiHamburgerMenu } from "react-icons/gi";
 
 const Navbar = () => {
+  const [open, setOpen] = useState(false);
   return (
-       
     <Nav>
-     <Menu>
-    <Logo to="/home">Clarusway</Logo>
-   
-    <MenuLink  to="/about">
-    ABOUT
-    </MenuLink>
-    <a href="/github">
-    GITHUB
-    </a>
-    <MenuLink  to="/logout">
-    LOGOUT
-    </MenuLink>
-    </Menu> 
+      <Logo to="/">
+        {"<Clarusway/>"} <span>Recipe</span>{" "}
+      </Logo>
 
+      <Hamburger onClick={() => setOpen(!open)}>
+        <GiHamburgerMenu />
+      </Hamburger>
+
+      <Menu ackapa={open} >
+        <MenuLink to="/about">About</MenuLink>
+
+        {/* Dışarıdaki harci bir sayfaya Link ile gidemem o yüzden menulink kullnamıyoruz */}
+        {/* <MenuLink to="">Github</MenuLink> */}
+        <a href="https://www.github.com" target="_blank">
+          Github
+        </a>
+        <MenuLink to="/">Logout</MenuLink>
+      </Menu>
     </Nav>
-    
-    
-    
+  );
+};
 
-    
-  )
-}
-
-export default Navbar
+export default Navbar;

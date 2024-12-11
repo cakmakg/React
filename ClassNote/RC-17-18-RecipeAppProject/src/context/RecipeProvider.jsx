@@ -10,6 +10,12 @@ export const RecipeContext = createContext();
 
 const RecipeProvider = ({ children }) => {
   /* -------------------------------------------------------------------------- */
+
+  const [name, setName] = useState(localStorage.getItem("username") || "");
+  const [password, setPassword] = useState(
+    localStorage.getItem("password") || ""
+  );
+
   //! Home, header, recipecard da gerekli olan veriler
   const [recipes, setRecipes] = useState([]);
 
@@ -17,18 +23,32 @@ const RecipeProvider = ({ children }) => {
   const [mealType, setMealType] = useState("Breakfast");
   const url = `https://api.edamam.com/search?q=${query}&app_id=${APP_ID}&app_key=${APP_KEY}&mealType=${mealType}`;
 
+  
+
+  const [error, setError] = useState(false);
+  const [loading,setLoading]=useState(false)
+
+  // Verinin çekildiği bölüm
+
   const getData = async () => {
-    const {data} = await axios.get(url);
-    console.log(data.hits)
-    setRecipes(data.hits)
+    setLoading(true)
+    try {
+      const { data } = await axios.get(url);
+      setRecipes(data.hits);
+    } catch (error) {
+      setError(true);
+    }
+    finally{
+      setLoading(false)
+    }
   };
 
-  /* -------------------------------------------------------------------------- */
-  /* ---------------- Diğer bölümlerde kullanılacak değişkenler --------------- */
-  const [name, setName] = useState(localStorage.getItem("username") || "");
-  const [password, setPassword] = useState(
-    localStorage.getItem("password") || ""
-  );
+  if (error) {
+    return <p>Something went wrong</p>;
+  }
+
+  if (loading) { return <p> .... LOADING .... </p>}
+
 
   return (
     <RecipeContext.Provider
@@ -43,14 +63,12 @@ const RecipeProvider = ({ children }) => {
         setMealType,
         getData,
         recipes,
-        setRecipes
+        setRecipes,
       }}
     >
-      {" "}
       {children}
     </RecipeContext.Provider>
   );
 };
 
 export default RecipeProvider;
-
