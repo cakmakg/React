@@ -1,16 +1,15 @@
 import React from "react";
 import AppRouter from "./router/AppRouter";
-import { AuthProvider } from "./context/AuthContext";
-import { BrowserRouter } from "react-router-dom";
 
+import { ToastContainer } from "react-toastify";
+import AuthContext from "./context/AuthContext";
 const App = () => {
   return (
-    <div className="dark:bg-gray-dark-main min-h-screen">
-      <AuthProvider>
-      <BrowserRouter>
+    <div className="dark:bg-[#23242a] min-h-screen">
+      <AuthContext>
         <AppRouter />
-        </BrowserRouter>
-      </AuthProvider>
+        <ToastContainer />
+      </AuthContext>
     </div>
   );
 };
