@@ -9,13 +9,17 @@ const[password,setPassword]=useState()
 const[firstName,setFirstName]=useState()
 const[lastName,setLastName]=useState()
 
-const{createKullanici}=useContext(YetkiContext)
+const{createKullanici,signUpGooglE}=useContext(YetkiContext)
 
   //handleSubmit=> createKullanici(email,password)
 const handleSubmit=(e)=>{
 e.preventDefault()
 
-createKullanici(email,password)
+
+//?navbarda firstname, lastname bastırmak istiyoruz, bunlar google la giriş yapıldığında displayName olarak geçiyor, kendimiz giriş yaptığımızda da aynı ismi verelim, navbarda displayName deyince basılmış olsun diye
+const displayName=`${firstName} ${lastName}`
+
+createKullanici(email,password,displayName)
 
 }
 
@@ -79,6 +83,7 @@ createKullanici(email,password)
           <button
             type="button"
             className="btn-danger flex justify-between text-center "
+            onClick={()=>signUpGooglE()}
           >
             Continue with Google
             <GoogleIcon color="currentColor" />
