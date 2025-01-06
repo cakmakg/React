@@ -1,8 +1,12 @@
 import React from 'react'
 
-const AuthContext = () => {
+export const YetkiContext= createContext()
+
+const AuthContext = ({children}) => {
   return (
-    <div>AuthContext</div>
+    <YetkiContext.Provider>
+      {children}
+    </YetkiContext.Provider>
   )
 }
 
