@@ -9,38 +9,36 @@ import { Box } from "@mui/material";
 import AuthHeader from "../components/AuthHeader";
 import AuthImage from "../components/AuthImage";
 import { Formik } from "formik";
-import { TextField, Button } from "@mui/material";
-import * as Yup from 'yup';
+import * as Yup from "yup";
+import useAuthCall from "../hook/useAuthCall";
+import RegisterForm from "../components/RegisterForm";
 
 const Register = () => {
+  const { register } = useAuthCall();
 
   const SignupSchema = Yup.object().shape({
-    username:Yup.string()
-    .min(5,"Kullanıcı adı 5 karakterden az olamaz")
-    .max(50,"Kullanıcı adı 50 karakterden fazla olamaz")
-    .required("Kullanıcı adı zorunludur"),    
+    username: Yup.string()
+      .min(5, "Kullanıcı adı 5 karakterden az olamaz")
+      .max(50, "Kullanıcı adı 50 karakterden fazla olamaz")
+      .required("Kullanıcı adı zorunludur"),
     firstName: Yup.string()
-      .min(2, 'Too Short!')
-      .max(50, 'Too Long!')
-      .required('Required'),
+      .min(2, "Too Short!")
+      .max(50, "Too Long!")
+      .required("Required"),
     lastName: Yup.string()
-      .min(2, 'Too Short!')
-      .max(50, 'Too Long!')
-      .required('Required'),
-    email: Yup.string().email('Invalid email').required('Required'),
-    password:Yup.string()
-    .min(8,"Password 8 karakterdn fazla olmalıdır")
-    .matches(/[a-z]/,"Şifre küçük harf içermelidir")
-    .matches(/[A-Z]/,"Şifre büyük hark içermelidir")
-    .matches(/\d+/,"Şifre sayısal karakter içermelidir.")
-    .matches(/[@$?!%&*]+/, "Özel karakter içermelidir(@$?!%&*)")
-
+      .min(2, "Too Short!")
+      .max(50, "Too Long!")
+      .required("Required"),
+    email: Yup.string()
+      .email("Email adresinde @ işareti olmalıdır")
+      .required("Bu alan zorunludur"),
+    password: Yup.string()
+      .min(8, "Password 8 karakterdn fazla olmalıdır")
+      .matches(/[a-z]/, "Şifre küçük harf içermelidir")
+      .matches(/[A-Z]/, "Şifre büyük hark içermelidir")
+      .matches(/\d+/, "Şifre sayısal karakter içermelidir.")
+      .matches(/[@$?!%&*]+/, "Özel karakter içermelidir(@$?!%&*)"),
   });
-
-
-
-
-
 
   return (
     <Container maxWidth="lg">
@@ -87,100 +85,20 @@ const Register = () => {
               password: "",
             }}
             validationSchema={SignupSchema}
-            onSubmit={(values)=>{
-              console.log(values)
+            onSubmit={(values) => {
+              console.log(values);
+              register(values)
+              // action degeri formiktenm gelen methodlari icerir
+              // formun text alanlarinin temizlenmesi icin resetform
+              // submit islemi bittigi icin setsubmit false olur
+              useActionState.RegisterForm()
+              isAction.setSubmitting(false)
             }}
-          >
-            {({
-              values,
-              errors,
-              touched,
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              isSubmitting,
-            }) => (
-              <form onSubmit={handleSubmit}>
-                <TextField
-                  name="username"
-                  value={values.username}
-                  onChange={handleChange}
-                  label="Username"
-                  onBlur={handleBlur} // kullanıcının input alanından ayrıldığını yaklayan event
-                  error={touched.username && errors.username} //validationda verdiğimiz kalıba uymazsa ilgili mesajları göstermesi için errors dan gelen mesajı yakalıyoruz.
-                  helperText={touched.username && errors.username} //validationda verdiğimiz kalıba uymazsa rengi errora çevirmesi için error attribute ı benden false/true degeri bekliyor ondan dolayı daha sağlıklı olması için boolean deger döndürüyoruz.
-                  // touched da kullanıcının inputa tıklayıp tıklamadığını yakalıyor
-                  variant="outlined"
-                  fullWidth
-                  type="text"
-                  margin="normal"
-                />
-                  <TextField
-                  name="firstName"
-                  value={values.firstName}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={touched.firstName && errors.firstName}
-                  helperText={touched.firstName && errors.firstName}
-                  label="First Name"
-                  variant="outlined"
-                  fullWidth
-                  type="text"
-                  margin="normal"
-                />
-                  <TextField
-                  name="lastName"
-                  value={values.lastName}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={touched.lastName && errors.lastName}
-                  helperText={touched.lastName && errors.lastName}
-                  label="Last Name"
-                  variant="outlined"
-                  fullWidth
-                  type="text"
-                  margin="normal"
-                />
-                  <TextField
-                  name="email"
-                  value={values.email}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={touched.email && errors.email}
-                  helperText={touched.email && errors.email}
-                  label="Email"
-                  variant="outlined"
-                  fullWidth
-                  type="email"
-                  margin="normal"
-                />
 
-
-
-
-                <TextField
-                  name="password"
-                  value={values.password}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={touched.password && errors.password}
-                  helperText={touched.password && errors.password}
-                  label="Password"
-                  variant="outlined"
-                  fullWidth
-                  type="password"
-                  margin="normal"
-                />
-
-                <Button 
-                type="submit"
-                variant="contained"
-                fullWidth
-                margin="normal"
-                >SUBMIT</Button>
-              </form>
-            )}
-          </Formik>
+            component={(props)=> <RegisterForm  {...props} /> }
+          />
+     
+         
 
           {/* /* -------------------------------------------------------------------------- */}
           <Box sx={{ textAlign: "center", mt: 2, color: "secondary.main" }}>

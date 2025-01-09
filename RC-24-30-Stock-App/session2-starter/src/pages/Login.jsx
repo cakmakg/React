@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 import AuthHeader from "../components/AuthHeader";
 import AuthImage from "../components/AuthImage";
 import { Formik } from "formik";
-import useAuthCall from "../hook/useAuthCall";
+import useAuthCall from "../hooks/useAuthCall";
 import LoginForm, { loginScheme } from "../components/LoginForm";
 
 const Login = () => {
