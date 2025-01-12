@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchFail, fetchStart, loginSuccess, registerSuccess } from "../features/authSlice";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 const useAuthCall = () => {
   const dispatch = useDispatch();
   const navigate=useNavigate()
+  const {Token}=useSelector((state)=>state.Auth)
 
   // Custom hook yazma kuralları
   //? 1-use Kelimesi ile başlar
@@ -49,9 +50,32 @@ const useAuthCall = () => {
     }
   };
 
+  const logout = async (userInfo) => {
+    dispatch(fetchStart());
+
+    try {
+      const { data } = await axios.post(
+        "https://10101.fullstack.clarusway.com/auth/logout",
+        
+        {
+          headers: {
+            Authorization:`Token ${token}`,
+          },
+        }
+         
+        
+      );
+      dispatch(logoutSuccess());
+      navigate("/");
+    
+
+    } catch (error) {
+      dispatch(fetchFail());
+    }
+  };
 
 
-  return { register ,login};
+  return { register ,login, logout};
 };
 
 export default useAuthCall;
