@@ -1,13 +1,22 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchFail, fetchStart, loginSuccess, registerSuccess } from "../features/authSlice";
+import { useDispatch } from "react-redux";
+import {
+  fetchFail,
+  fetchStart,
+  loginSuccess,
+  logoutSuccess,
+  registerSuccess,
+} from "../features/authSlice";
 import axios from "axios";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const useAuthCall = () => {
   const dispatch = useDispatch();
-  const navigate=useNavigate()
-  const {Token}=useSelector((state)=>state.Auth)
+  const navigate = useNavigate();
+  const { token } = useSelector((state) => state.auth);
+  
+  const BASE_URL=import.meta.env.VITE_BASE_URL
 
   // Custom hook yazma kuralları
   //? 1-use Kelimesi ile başlar
@@ -20,62 +29,46 @@ const useAuthCall = () => {
 
     try {
       const { data } = await axios.post(
-        "https://10101.fullstack.clarusway.com/users",
+        `${BASE_URL}users`,
         userInfo
       );
       console.log("register içinde", data);
       dispatch(registerSuccess(data));
-      navigate("/stock")
-
+      navigate("/stock");
     } catch (error) {
       dispatch(fetchFail());
     }
   };
-
 
   const login = async (userInfo) => {
     dispatch(fetchStart());
 
     try {
       const { data } = await axios.post(
-        "https://10101.fullstack.clarusway.com/auth/login",
+       `${BASE_URL}auth/login`,
         userInfo
       );
       console.log("login içinde", data);
       dispatch(loginSuccess(data));
-      navigate("/stock")
-
+      navigate("/stock");
     } catch (error) {
       dispatch(fetchFail());
     }
   };
 
-  const logout = async (userInfo) => {
+  const logout = async () => {
     dispatch(fetchStart());
 
     try {
-      const { data } = await axios.post(
-        "https://10101.fullstack.clarusway.com/auth/logout",
-        
-        {
-          headers: {
-            Authorization:`Token ${token}`,
-          },
-        }
-         
-        
-      );
+      const { data } = await axiosWithToken.get(`auth/logout`)
       dispatch(logoutSuccess());
       navigate("/");
-    
-
     } catch (error) {
       dispatch(fetchFail());
     }
   };
 
-
-  return { register ,login, logout};
+  return { register, login, logout};
 };
 
 export default useAuthCall;
