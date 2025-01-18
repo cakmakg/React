@@ -10,13 +10,13 @@ import {
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import useAxios from "./useAxios";
+import { toastErrorNotify, toastSuccessNotify } from "../helper/ToastNotify";
 
 const useAuthCall = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { token } = useSelector((state) => state.auth);
-  
-  const BASE_URL=import.meta.env.VITE_BASE_URL
+  const { axiosWithToken, axiosWithoutHeader } = useAxios();
 
   // Custom hook yazma kuralları
   //? 1-use Kelimesi ile başlar
@@ -28,15 +28,13 @@ const useAuthCall = () => {
     dispatch(fetchStart());
 
     try {
-      const { data } = await axios.post(
-        `${BASE_URL}users`,
-        userInfo
-      );
-      console.log("register içinde", data);
+      const { data } = await axiosWithoutHeader.post(`users`, userInfo);
       dispatch(registerSuccess(data));
       navigate("/stock");
+      toastSuccessNotify("Register is successful");
     } catch (error) {
       dispatch(fetchFail());
+      toastErrorNotify("Register failed")
     }
   };
 
@@ -44,15 +42,14 @@ const useAuthCall = () => {
     dispatch(fetchStart());
 
     try {
-      const { data } = await axios.post(
-       `${BASE_URL}auth/login`,
-        userInfo
-      );
-      console.log("login içinde", data);
+      const { data } = await axiosWithoutHeader.post(`auth/login`, userInfo);
       dispatch(loginSuccess(data));
       navigate("/stock");
+      toastSuccessNotify("Login is successful");
     } catch (error) {
       dispatch(fetchFail());
+      toastErrorNotify("Login failed")
+
     }
   };
 
@@ -60,15 +57,17 @@ const useAuthCall = () => {
     dispatch(fetchStart());
 
     try {
-      const { data } = await axiosWithToken.get(`auth/logout`)
+      const { data } = await axiosWithToken.get(`auth/logout`);
       dispatch(logoutSuccess());
+      toastSuccessNotify("Logout is successful");
+
       navigate("/");
     } catch (error) {
       dispatch(fetchFail());
     }
   };
 
-  return { register, login, logout};
+  return { register, login, logout };
 };
 
 export default useAuthCall;

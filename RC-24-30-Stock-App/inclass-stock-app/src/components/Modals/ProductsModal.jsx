@@ -35,19 +35,15 @@ export default function ProductsModal({ open, handleClose, initialState }) {
     setInfo({ ...info, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault()
     // Database info bilgisini gönderme işlemi
-    if (info._id) {
-      putStockData("firms", info);
-    } else {
-      postStockData("firms", info);
-    }
+      postStockData("products", info);
+      handleClose()
   };
 
-  const { brands } = useSelector((state) => state.stock);
-  const { category } = useSelector((state) => state.stock);
+  const { brands,categories} = useSelector((state) => state.stock);
 
- console.log("category",category);
 
   //useEffect didUpdate metodu tarzında çalışması. dependancy arrayde başlangıç değeri verildiğinde güncelleme yapması.
   //  useEffect(()=>{setInfo(initialState)},[initialState])
@@ -69,31 +65,47 @@ export default function ProductsModal({ open, handleClose, initialState }) {
             sx={{ display: "flex", flexDirection: "column", gap: 2 }}
           >
             <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Age</InputLabel>
+              <InputLabel id="demo-simple-select-label">Category</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={info.name}
-                label="Age"
+                value={info.categoryId}
+                label="Category"
+                name="categoryId"
                 onChange={handleChange}
               >
-                {category.map(() => (
-                  <MenuItem value={10}>{category.name}</MenuItem>
+                {categories.map((category,index) => (
+                  <MenuItem   key={index} value={category._id}>{category.name}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Brand</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={info.brandId}
+                label="Brand"
+                name="brandId"
+                onChange={handleChange}
+              >
+                {brands.map((brand,index) => (
+                  <MenuItem   key={index} value={brand._id}>{brand.name}</MenuItem>
                 ))}
               </Select>
             </FormControl>
 
             <TextField
-              label="image"
+              label="Product Name*"
               variant="outlined"
               type="text"
-              name="image"
+              name="name"
               onChange={handleChange}
-              value={info.image}
+              value={info.name}
             />
             <Button
               type="submit"
-              sx={{ backgroundColor: "secondary.main", color: "white" }}
+              sx={{ backgroundColor: "secondary.main", color: "white" ,"&:hover":{backgroundColor: "secondary.main",}}}
             >
               {info._id ? "UPDATE" : "ADD FIRM"}
             </Button>
